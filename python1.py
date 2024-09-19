@@ -83,7 +83,7 @@ def prob2_part2():
 
     convolution = dt_convolve(pulse1, pulse2, -3, 4)
     time = np.array(range(-11, 12))
-    plt.stem(time, convolution(time))
+    plt.stem(time, np.vectorize(convolution)(time))
     plt.show()
 
 def prob2_part3():
@@ -185,10 +185,11 @@ def prob4():
     
 
 if __name__ == "__main__":
-    # prob1_part1()
-    # prob1_part2()
-    # prob1_part3()
-    # prob2_part2()
-    # prob2_part3()
-    # prob3()
+    prob1_part1()
+    prob1_part2()
+    prob1_part3()
+    prob2_part1()
+    prob2_part2()
+    prob2_part3()
+    prob3()
     prob4()
