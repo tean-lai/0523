@@ -33,12 +33,13 @@ def dt_convolve(
 def prob1_part1():
     time = np.array(range(-7, 8))
     plt.stem(time, np.vectorize(delta)(time))
+    plt.title("Problem 1 Part 1: δ")
     plt.show()
 
 def prob1_part2():
     time = np.array(range(-7, 12))
-    # time = np.linspace(-7, 12)
     plt.stem(time, np.vectorize(u)(time))
+    plt.title("Problem 1 Part 2: u")
     plt.show()
 
 def prob1_part3():
@@ -49,6 +50,7 @@ def prob1_part3():
             return 0
     time = np.array(range(-5, 9))
     plt.stem(time, np.vectorize(p)(time))
+    plt.title("Problem 1 Part 3: p")
     plt.show()
 
 
@@ -67,6 +69,7 @@ def prob2_part1():
 
     time = np.array(range(-9, 10))
     plt.stem(time, convolve(time))
+    plt.title("Problem 2 Part 1: convolution")
     plt.show()
 
 def prob2_part2():
@@ -84,26 +87,26 @@ def prob2_part2():
     convolution = dt_convolve(pulse1, pulse2, -3, 4)
     time = np.array(range(-11, 12))
     plt.stem(time, np.vectorize(convolution)(time))
+    plt.title("Problem 2 Part 2: convolution")
     plt.show()
 
 def prob2_part3():
-    def pulse1_spec(n):
+    def pulse1(n):
         if -3 <= n < 4:
             return 1.
         else:
             return 0.
     
-    def pulse2_spec(n):
+    def pulse2(n):
         if 2 <= n < 5:
             return 2.
         else:
             return 0.
     
-    pulse1 = np.vectorize(pulse1_spec)
-    pulse2 = np.vectorize(pulse2_spec)
     convolution = dt_convolve(pulse1, pulse2, -3, 4)
     time = np.array(range(-3, 13))
     plt.stem(time, np.vectorize(convolution)(time))
+    plt.title("Problem 2 Part 3: convolution")
     plt.show()
 
 def prob3():
@@ -119,17 +122,28 @@ def prob3():
     x = gen_signal()
     convolution = dt_convolve(delta, x, 0, 1)
 
-    equal = True
-    for n in range(-23, 22):
-        print("x(%3d) = %2d\t δ*x(%3d) = %2d"%(n, x(n), n, convolution(n)))
-        if x(n) != convolution(n):
-            equal = False
-    if equal:
-        print("x and δ*x are equal")
-    else:
-        print("x and δ*x are not equal")
+    x, convolution = np.vectorize(x), np.vectorize(convolution)
+
+    times = np.array(range(-23, 24))
+
+    _, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 5))
+
+    ax1.stem(times, x(times))
+    ax1.set_title("x")
+
+    ax2.stem(times, convolution(times))
+    ax2.set_title("δ*x")
+
+    # Display the plots side by side
+    plt.tight_layout()  # Adjust the layout to prevent overlap
+    plt.suptitle("Problem 3: x(n) vs δ*x(n)")
+    plt.show()
+    
 
 def sup_add(s1, s2):
+    """
+    Adds support intervals together
+    """
     k1, k2 = s1[0], s2[0]
     P = s1[1] - k1
     L = s2[1] - k2
@@ -175,11 +189,18 @@ def prob4():
             y_n, y_sup = gen_y_n(x_array, x_sup, n)
             sigma_n = gen_sigma_n(y_n, y_sup)
             gaussian = gen_gaussian(sigma_n)
+
             times = np.linspace(-n, n + 1, 100)
             plt.plot(times, np.vectorize(gaussian)(times))
 
             times = np.array(range(-n, n + 1))
             plt.stem(times, np.vectorize(y_n)(times))
+
+            if x_sup == x1_sup:
+                tmp = "First"
+            else:
+                tmp = "Second"
+            plt.title("Problem 4: %s x with N = %d"%(tmp, n))
             plt.show()
 
     
