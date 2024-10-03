@@ -56,14 +56,12 @@ def prob1_part3():
 
 
 def prob2_part1():
-    def pulse_spec(n):
+    def pulse(n):
         if -3 <= n < 4:
             return 1
         else:
             return 0
 
-    pulse = np.vectorize(pulse_spec)
-    
     convolve = dt_convolve(pulse, pulse, -3, 4)
     convolve = np.vectorize(convolve)
 
